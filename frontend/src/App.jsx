@@ -740,7 +740,7 @@ const Contact = () => {
             <div className="cm-contact-icon"><Mail size={20} /></div>
             <div>
               <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Official Email</div>
-              <strong style={{ fontSize: '15px' }}>rajammy1234567@gmail.com</strong>
+              <strong style={{ fontSize: '15px' }}>academyqsr@gmail.com</strong>
             </div>
           </div>
 
@@ -749,7 +749,7 @@ const Contact = () => {
             <div>
               <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Headquarters</div>
               <strong style={{ fontSize: '13px', lineHeight: 1.4, display: 'block' }}>
-                Motia'z Royal Business Park, ZIRAKPUR, Singhpura 140603 (Ambala-Chandigarh Highway)
+                (Ambala-Chandigarh Highway)
               </strong>
             </div>
           </div>
