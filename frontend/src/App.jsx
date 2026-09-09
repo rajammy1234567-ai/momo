@@ -4,7 +4,6 @@ import {
   Instagram,
   Facebook,
   Twitter,
-  Phone,
   Mail,
   MapPin,
   ChevronRight,
@@ -607,8 +606,8 @@ const FranchiseForm = () => {
 
           <div style={{ background: 'rgba(255,183,3,0.1)', border: '1px solid rgba(255,183,3,0.3)', padding: '16px 20px', borderRadius: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <div style={{ fontSize: '11px', color: '#ffb703', fontWeight: 800, textTransform: 'uppercase' }}>Franchise Hotline</div>
-              <div style={{ fontSize: '16px', fontWeight: 900, color: '#fff' }}>+91 9780524008</div>
+              <div style={{ fontSize: '11px', color: '#ffb703', fontWeight: 800, textTransform: 'uppercase' }}>Franchise Desk</div>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: '#fff' }}>Instant WhatsApp Support</div>
             </div>
             <button
               onClick={handleWhatsAppFranchise}
@@ -729,14 +728,6 @@ const Contact = () => {
           </p>
 
           <div className="cm-contact-card">
-            <div className="cm-contact-icon"><Phone size={20} /></div>
-            <div>
-              <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Direct Hotline</div>
-              <strong style={{ fontSize: '15px' }}>+91 9780524008</strong>
-            </div>
-          </div>
-
-          <div className="cm-contact-card">
             <div className="cm-contact-icon"><Mail size={20} /></div>
             <div>
               <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Official Email</div>
@@ -747,9 +738,9 @@ const Contact = () => {
           <div className="cm-contact-card">
             <div className="cm-contact-icon"><MapPin size={20} /></div>
             <div>
-              <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Headquarters</div>
-              <strong style={{ fontSize: '13px', lineHeight: 1.4, display: 'block' }}>
-                (Ambala-Chandigarh Highway)
+              <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Location</div>
+              <strong style={{ fontSize: '15px', lineHeight: 1.4, display: 'block' }}>
+                Chandigarh
               </strong>
             </div>
           </div>
@@ -831,12 +822,11 @@ const Footer = () => (
         </div>
 
         <div className="cm-footer-col">
-          <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Corporate Office</h4>
+          <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Location & Contact</h4>
           <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#9ca3af', marginBottom: '10px' }}>
-            Motia'z Royal Business Park, ZIRAKPUR, Singhpura 140603 (Ambala-Chandigarh Highway)
+            Chandigarh
           </p>
-          <div style={{ fontSize: '13px', color: '#ffb703', fontWeight: 700 }}>+91 9780524008</div>
-          <div style={{ fontSize: '13px', color: '#9ca3af' }}>rajammy1234567@gmail.com</div>
+          <div style={{ fontSize: '13px', color: '#ffb703', fontWeight: 700 }}>academyqsr@gmail.com</div>
         </div>
       </div>
 

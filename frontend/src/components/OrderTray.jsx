@@ -235,7 +235,7 @@ export const OrderTray = ({ tray, onUpdateQty, onRemoveItem, onClearTray }) => {
                     </button>
 
                     <p className="text-[11px] text-center text-gray-400">
-                      Orders sent directly to Chaow Momo at Motia'z Royal Business Park, Zirakpur (+91 9780524008).
+                      Orders sent directly to Chaow Momo, Chandigarh.
                     </p>
                   </div>
                 )}
