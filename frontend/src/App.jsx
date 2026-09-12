@@ -796,7 +796,7 @@ const Footer = () => (
       <div className="cm-footer-grid">
         <div className="cm-footer-col cm-footer-brand">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-            <img src="/logo.png" alt="Chaw Momos" style={{ height: '44px', width: 'auto' }} />
+            <img src="/logo.png" alt="Chaw Momos" style={{ height: '48px', width: '48px', borderRadius: '50%', objectFit: 'contain' }} />
             <div>
               <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff' }}>CHAW MOMOS</div>
               <span style={{ fontSize: '9px', fontWeight: 800, color: '#ffb703', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
