@@ -20,7 +20,8 @@ import {
   Check,
   Mountain,
   Utensils,
-  ArrowLeft
+  ArrowLeft,
+  Phone
 } from 'lucide-react';
 
 import { CATEGORIES, MENU_ITEMS } from './data/menuData';
@@ -593,7 +594,11 @@ const FranchiseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('Submitting application...');
+    setStatus('Submitting application and opening WhatsApp (+91 97805 24008)...');
+
+    // Automatically send details to official WhatsApp (+91 97805 24008)
+    handleWhatsAppFranchise();
+
     try {
       if (API_BASE_URL) {
         await axios.post(`${API_BASE_URL}/api/franchise`, formData);
@@ -601,7 +606,6 @@ const FranchiseForm = () => {
       setSubmitted(true);
       setStatus('');
     } catch (err) {
-      // Allow seamless UX even if mock API is offline
       setSubmitted(true);
       setStatus('');
     }
@@ -609,7 +613,7 @@ const FranchiseForm = () => {
 
   const handleWhatsAppFranchise = () => {
     let msg = `🤝 *FRANCHISE INQUIRY - CHAW MOMOS*\n\n`;
-    msg += `📞 *CONTACT DETAILS*:\n`;
+    msg += `📞 *APPLICANT CONTACT DETAILS*:\n`;
     msg += `• Name: ${formData.name || 'Interested Partner'}\n`;
     msg += `• Phone: ${formData.contactNumber || 'N/A'}\n`;
     msg += `• Email: ${formData.email || 'N/A'}\n`;
@@ -619,7 +623,8 @@ const FranchiseForm = () => {
     msg += `2. Investment Budget: ${formData.investmentBudget}\n`;
     msg += `3. Commercial Location: ${formData.hasLocation}\n`;
     msg += `4. Start Timeline: ${formData.timeline}\n`;
-    msg += `5. Prior F&B Business: ${formData.fnbExperience}\n`;
+    msg += `5. Prior F&B Business: ${formData.fnbExperience}\n\n`;
+    msg += `🌐 *Sent from Chaw Momos Official Website*`;
     window.open(`https://api.whatsapp.com/send?phone=919780524008&text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -903,9 +908,23 @@ const FranchiseForm = () => {
                 </div>
               </div>
 
-              <button type="submit" className="cm-submit-btn" style={{ marginTop: '8px' }}>
-                Submit Franchise Application 🥟
+              <button
+                type="submit"
+                className="cm-submit-btn"
+                style={{
+                  marginTop: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <span>Submit Application & Open WhatsApp (+91 97805 24008) 🥟</span>
               </button>
+
+              <div style={{ textAlign: 'center', fontSize: '11px', color: '#16a34a', fontWeight: 700, marginTop: '8px' }}>
+                ⚡ Submitting opens WhatsApp directly with our Franchise Director at +91 97805 24008
+              </div>
 
               <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', lineHeight: 1.5, marginTop: '12px' }}>
                 By submitting this application, you agree to our{' '}
@@ -935,15 +954,26 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('Sending message...');
+    setStatus('Sending message to WhatsApp (+91 97805 24008)...');
+
+    // Automatically send contact message to official WhatsApp (+91 97805 24008)
+    let msg = `💬 *STORE & CORPORATE MESSAGE - CHAW MOMOS*\n\n`;
+    msg += `• Name: ${formData.name || 'N/A'}\n`;
+    msg += `• Email: ${formData.email || 'N/A'}\n`;
+    msg += `• Subject: ${formData.subject || 'General Inquiry'}\n`;
+    msg += `• Message: ${formData.message || 'N/A'}\n\n`;
+    msg += `🌐 *Sent from Chaw Momos Official Website*`;
+    window.open(`https://api.whatsapp.com/send?phone=919780524008&text=${encodeURIComponent(msg)}`, '_blank');
+
     try {
       if (API_BASE_URL) {
         await axios.post(`${API_BASE_URL}/api/contact`, formData);
       }
-      setStatus('Message Sent Successfully! We will respond shortly.');
+      setStatus('Message opened in WhatsApp (+91 97805 24008)! We will respond shortly.');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      setStatus('Message noted! You can also chat directly with our store support on WhatsApp.');
+      setStatus('Message opened in WhatsApp (+91 97805 24008)! We will respond shortly.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
     }
   };
 
@@ -958,6 +988,16 @@ const Contact = () => {
           <p className="cm-section-desc" style={{ marginBottom: '28px' }}>
             Have questions regarding our café menu, catering, or want to visit our headquarters? Reach out to our team.
           </p>
+
+          <div className="cm-contact-card">
+            <div className="cm-contact-icon"><Phone size={20} /></div>
+            <div>
+              <div style={{ fontSize: '11px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase' }}>Phone & WhatsApp</div>
+              <a href="https://api.whatsapp.com/send?phone=919780524008" target="_blank" rel="noopener noreferrer" style={{ fontSize: '15px', color: '#ffffff', fontWeight: 700, textDecoration: 'none' }}>
+                +91 97805 24008
+              </a>
+            </div>
+          </div>
 
           <div className="cm-contact-card">
             <div className="cm-contact-icon"><Mail size={20} /></div>
