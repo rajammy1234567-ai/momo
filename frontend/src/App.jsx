@@ -578,18 +578,17 @@ const About = () => (
 // ==================== FRANCHISE APPLICATION SECTION ====================
 const FranchiseForm = () => {
   const [formData, setFormData] = useState({
+    primaryReason: 'I want to start a new business',
+    investmentBudget: '₹2–3 Lakh',
+    hasLocation: 'Yes, I have a location',
+    timeline: 'Within 1 month',
+    fnbExperience: 'No',
     name: '',
-    age: '',
     contactNumber: '',
     email: '',
-    currentOccupation: 'family-business',
     city: '',
-    pincode: '',
-    investmentRange: '20-lakhs-to-35-lakhs',
-    proposedLocation: '',
-    propertySize: '',
-    hoursPerDay: 'more-than-8-hours',
   });
+  const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState('');
 
   const handleSubmit = async (e) => {
@@ -599,18 +598,28 @@ const FranchiseForm = () => {
       if (API_BASE_URL) {
         await axios.post(`${API_BASE_URL}/api/franchise`, formData);
       }
-      setStatus('Application Submitted Successfully! Our franchise director will contact you within 24 hours.');
+      setSubmitted(true);
+      setStatus('');
     } catch (err) {
-      setStatus('Application received! For fast-track processing, feel free to contact our Franchise Desk directly on WhatsApp.');
+      // Allow seamless UX even if mock API is offline
+      setSubmitted(true);
+      setStatus('');
     }
   };
 
   const handleWhatsAppFranchise = () => {
-    let msg = `🤝 *FRANCHISE INQUIRY - CHAW MOMOS*\n`;
-    msg += `Name: ${formData.name || 'Interested Franchise Partner'}\n`;
-    msg += `Contact: ${formData.contactNumber || 'N/A'}\n`;
-    msg += `City: ${formData.city || 'N/A'} (${formData.pincode || ''})\n`;
-    msg += `Investment Range: ${formData.investmentRange}\n`;
+    let msg = `🤝 *FRANCHISE INQUIRY - CHAW MOMOS*\n\n`;
+    msg += `📞 *CONTACT DETAILS*:\n`;
+    msg += `• Name: ${formData.name || 'Interested Partner'}\n`;
+    msg += `• Phone: ${formData.contactNumber || 'N/A'}\n`;
+    msg += `• Email: ${formData.email || 'N/A'}\n`;
+    msg += `• City: ${formData.city || 'N/A'}\n\n`;
+    msg += `📋 *QUALIFICATION ANSWERS*:\n`;
+    msg += `1. Primary Reason: ${formData.primaryReason}\n`;
+    msg += `2. Investment Budget: ${formData.investmentBudget}\n`;
+    msg += `3. Commercial Location: ${formData.hasLocation}\n`;
+    msg += `4. Start Timeline: ${formData.timeline}\n`;
+    msg += `5. Prior F&B Business: ${formData.fnbExperience}\n`;
     window.open(`https://api.whatsapp.com/send?phone=919780524008&text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -673,74 +682,246 @@ const FranchiseForm = () => {
         {/* Application Form */}
         <div className="cm-franchise-form-wrap">
           <h3 className="cm-form-title">Franchise Application</h3>
-          <p className="cm-form-sub">Fill in your details below to receive our official franchise prospectus.</p>
+          <p className="cm-form-sub">Answer these brief qualification questions to receive our official franchise prospectus.</p>
 
-          <form onSubmit={handleSubmit}>
-            <div className="cm-form-grid-2">
-              <div>
-                <label className="cm-form-label">Full Name *</label>
-                <input type="text" name="name" required placeholder="Your Name" value={formData.name} onChange={handleChange} className="cm-form-input" />
-              </div>
-              <div>
-                <label className="cm-form-label">Age *</label>
-                <input type="text" name="age" required placeholder="Your Age" value={formData.age} onChange={handleChange} className="cm-form-input" />
-              </div>
-            </div>
-
-            <div className="cm-form-grid-2">
-              <div>
-                <label className="cm-form-label">Phone Number *</label>
-                <input type="text" name="contactNumber" required placeholder="10-digit mobile" value={formData.contactNumber} onChange={handleChange} className="cm-form-input" />
-              </div>
-              <div>
-                <label className="cm-form-label">Email *</label>
-                <input type="email" name="email" required placeholder="name@domain.com" value={formData.email} onChange={handleChange} className="cm-form-input" />
-              </div>
-            </div>
-
-            <div className="cm-form-grid-2">
-              <div>
-                <label className="cm-form-label">City *</label>
-                <input type="text" name="city" required placeholder="Target City" value={formData.city} onChange={handleChange} className="cm-form-input" />
-              </div>
-              <div>
-                <label className="cm-form-label">Pincode *</label>
-                <input type="text" name="pincode" required placeholder="Pincode" value={formData.pincode} onChange={handleChange} className="cm-form-input" />
-              </div>
-            </div>
-
-            <div className="cm-form-group">
-              <label className="cm-form-label">Investment Capability *</label>
-              <select name="investmentRange" value={formData.investmentRange} onChange={handleChange} className="cm-form-input">
-                <option value="20-lakhs-to-35-lakhs">₹20 Lakhs to ₹35 Lakhs (Kiosk / Quick-Bite)</option>
-                <option value="35-lakhs-to-50-lakhs">₹35 Lakhs to ₹50 Lakhs (Café Dine-In)</option>
-                <option value="above-50-lakhs">Above ₹50 Lakhs (Flagship Multi-Story Café)</option>
-              </select>
-            </div>
-
-            <div className="cm-form-group">
-              <label className="cm-form-label">Proposed Location / Market Area</label>
-              <input type="text" name="proposedLocation" placeholder="e.g. High Street, Mall food court, University belt" value={formData.proposedLocation} onChange={handleChange} className="cm-form-input" />
-            </div>
-
-            <button type="submit" className="cm-submit-btn">
-              Submit Franchise Application
-            </button>
-
-            <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', lineHeight: 1.5, marginTop: '12px' }}>
-              By submitting this application, you agree to our{' '}
-              <Link to="/privacy-policy" style={{ color: '#ffb703', textDecoration: 'underline', fontWeight: 700 }}>
-                Privacy Policy
-              </Link>{' '}
-              and consent to receive communication via Call, SMS, WhatsApp, or Email regarding franchise opportunities.
-            </p>
-
-            {status && (
-              <p style={{ textAlign: 'center', fontSize: '12px', fontWeight: 800, marginTop: '12px', color: status.includes('Successfully') ? '#16a34a' : '#d97706' }}>
-                {status}
+          {submitted ? (
+            <div style={{ textAlign: 'center', padding: '36px 16px', animation: 'fadeIn 0.3s ease' }}>
+              <div style={{ fontSize: '50px', marginBottom: '16px' }}>🥟</div>
+              <h3 style={{ fontSize: '22px', fontWeight: 900, color: '#140905', marginBottom: '12px' }}>
+                Thank you for your interest in Chaw Momos!
+              </h3>
+              <p style={{ fontSize: '14px', color: '#55443d', lineHeight: 1.7, maxWidth: '440px', margin: '0 auto 24px' }}>
+                Our franchise team will review your details and contact you to discuss the opportunity, investment, and next steps.
               </p>
-            )}
-          </form>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+                <button
+                  onClick={handleWhatsAppFranchise}
+                  style={{
+                    background: '#16a34a',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '13px 26px',
+                    borderRadius: '12px',
+                    fontWeight: 800,
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 15px rgba(22, 163, 74, 0.35)'
+                  }}
+                >
+                  <span>Chat on WhatsApp Directly →</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({
+                      primaryReason: 'I want to start a new business',
+                      investmentBudget: '₹2–3 Lakh',
+                      hasLocation: 'Yes, I have a location',
+                      timeline: 'Within 1 month',
+                      fnbExperience: 'No',
+                      name: '',
+                      contactNumber: '',
+                      email: '',
+                      city: '',
+                    });
+                  }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#6e584f',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    marginTop: '6px',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Submit another application
+                </button>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {/* Question 1 */}
+              <div className="cm-form-group">
+                <label className="cm-form-label">
+                  1. What is your primary reason for exploring a Chaw Momos franchise? *
+                </label>
+                <select
+                  name="primaryReason"
+                  value={formData.primaryReason}
+                  onChange={handleChange}
+                  className="cm-form-input"
+                  required
+                >
+                  <option value="I want to start a new business">I want to start a new business</option>
+                  <option value="I want to expand my existing food business">I want to expand my existing food business</option>
+                  <option value="I’m looking for an investment opportunity">I’m looking for an investment opportunity</option>
+                  <option value="Just exploring">Just exploring</option>
+                </select>
+              </div>
+
+              {/* Question 2 */}
+              <div className="cm-form-group">
+                <label className="cm-form-label">
+                  2. What is your estimated investment budget? *
+                </label>
+                <select
+                  name="investmentBudget"
+                  value={formData.investmentBudget}
+                  onChange={handleChange}
+                  className="cm-form-input"
+                  required
+                >
+                  <option value="₹2–3 Lakh">₹2–3 Lakh (Kiosk / Quick-Counter)</option>
+                  <option value="₹3–4 Lakh">₹3–4 Lakh (Compact Takeaway & Delivery)</option>
+                  <option value="₹4–6 Lakh">₹4–6 Lakh (Full Momo Café & Quick Bites)</option>
+                  <option value="₹6 Lakh+">₹6 Lakh+ (Flagship Dine-In Model)</option>
+                </select>
+              </div>
+
+              {/* Question 3 & 4 (Grid 2) */}
+              <div className="cm-form-grid-2">
+                <div>
+                  <label className="cm-form-label">
+                    3. Do you already have a commercial location? *
+                  </label>
+                  <select
+                    name="hasLocation"
+                    value={formData.hasLocation}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                    required
+                  >
+                    <option value="Yes, I have a location">Yes, I have a location</option>
+                    <option value="No, I need help finding a location">No, I need help finding a location</option>
+                    <option value="I’m currently searching">I’m currently searching</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="cm-form-label">
+                    4. When are you planning to start? *
+                  </label>
+                  <select
+                    name="timeline"
+                    value={formData.timeline}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                    required
+                  >
+                    <option value="Within 1 month">Within 1 month</option>
+                    <option value="1–3 months">1–3 months</option>
+                    <option value="3–6 months">3–6 months</option>
+                    <option value="6+ months">6+ months</option>
+                    <option value="Just exploring">Just exploring</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Question 5 */}
+              <div className="cm-form-group">
+                <label className="cm-form-label">
+                  5. Have you previously operated a food/F&B business? *
+                </label>
+                <select
+                  name="fnbExperience"
+                  value={formData.fnbExperience}
+                  onChange={handleChange}
+                  className="cm-form-input"
+                  required
+                >
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              {/* Contact Details Header */}
+              <div style={{ marginTop: '20px', marginBottom: '12px', borderTop: '1px solid #ebdcd3', paddingTop: '16px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#d63031', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  📞 Contact Details
+                </span>
+              </div>
+
+              <div className="cm-form-grid-2">
+                <div>
+                  <label className="cm-form-label">Full Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Your Full Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                  />
+                </div>
+                <div>
+                  <label className="cm-form-label">Phone Number *</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    required
+                    placeholder="10-digit mobile number"
+                    value={formData.contactNumber}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                  />
+                </div>
+              </div>
+
+              <div className="cm-form-grid-2">
+                <div>
+                  <label className="cm-form-label">Email Address *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="name@domain.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                  />
+                </div>
+                <div>
+                  <label className="cm-form-label">City *</label>
+                  <input
+                    type="text"
+                    name="city"
+                    required
+                    placeholder="Your City"
+                    value={formData.city}
+                    onChange={handleChange}
+                    className="cm-form-input"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className="cm-submit-btn" style={{ marginTop: '8px' }}>
+                Submit Franchise Application 🥟
+              </button>
+
+              <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', lineHeight: 1.5, marginTop: '12px' }}>
+                By submitting this application, you agree to our{' '}
+                <Link to="/privacy-policy" style={{ color: '#ffb703', textDecoration: 'underline', fontWeight: 700 }}>
+                  Privacy Policy
+                </Link>{' '}
+                and consent to receive communication via Call, SMS, WhatsApp, or Email regarding franchise opportunities.
+              </p>
+
+              {status && (
+                <p style={{ textAlign: 'center', fontSize: '12px', fontWeight: 800, marginTop: '12px', color: '#d97706' }}>
+                  {status}
+                </p>
+              )}
+            </form>
+          )}
         </div>
       </div>
     </section>
