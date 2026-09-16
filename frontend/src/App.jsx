@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import axios from 'axios';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import {
   Instagram,
   Facebook,
@@ -18,24 +19,28 @@ import {
   Coffee,
   Check,
   Mountain,
-  Utensils
+  Utensils,
+  ArrowLeft
 } from 'lucide-react';
 
 import { CATEGORIES, MENU_ITEMS } from './data/menuData';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // ==================== NAVBAR ====================
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const isPrivacyPage = location.pathname.startsWith('/privacy');
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Brand Story', href: '#brand-story' },
-    { name: 'Menu (75+)', href: '#menu' },
-    { name: 'About', href: '#about' },
-    { name: 'Franchise', href: '#franchise' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: isPrivacyPage ? '/#home' : '#home' },
+    { name: 'Brand Story', href: isPrivacyPage ? '/#brand-story' : '#brand-story' },
+    { name: 'Menu (75+)', href: isPrivacyPage ? '/#menu' : '#menu' },
+    { name: 'About', href: isPrivacyPage ? '/#about' : '#about' },
+    { name: 'Franchise', href: isPrivacyPage ? '/#franchise' : '#franchise' },
+    { name: 'Contact', href: isPrivacyPage ? '/#contact' : '#contact' },
   ];
 
   return (
@@ -43,17 +48,31 @@ const Navbar = () => {
       <header className="cm-navbar">
         <div className="cm-container cm-navbar-inner">
           {/* Logo & Brand Identity */}
-          <a href="#home" className="cm-brand-logo-wrap">
-            <img
-              src="/logo.png"
-              alt="Chaw Momos Logo"
-              className="cm-brand-logo-img"
-            />
-            <div>
-              <div className="cm-brand-title">CHAW MOMOS</div>
-              <span className="cm-brand-tagline">Himalayan • Punjabi • Café</span>
-            </div>
-          </a>
+          {isPrivacyPage ? (
+            <Link to="/" className="cm-brand-logo-wrap">
+              <img
+                src="/logo.png"
+                alt="Chaw Momos Logo"
+                className="cm-brand-logo-img"
+              />
+              <div>
+                <div className="cm-brand-title">CHAW MOMOS</div>
+                <span className="cm-brand-tagline">Himalayan • Punjabi • Café</span>
+              </div>
+            </Link>
+          ) : (
+            <a href="#home" className="cm-brand-logo-wrap">
+              <img
+                src="/logo.png"
+                alt="Chaw Momos Logo"
+                className="cm-brand-logo-img"
+              />
+              <div>
+                <div className="cm-brand-title">CHAW MOMOS</div>
+                <span className="cm-brand-tagline">Himalayan • Punjabi • Café</span>
+              </div>
+            </a>
+          )}
 
           {/* Desktop Navigation Links */}
           <nav className="cm-nav-links">
@@ -62,9 +81,15 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <a href="#menu" className="cm-nav-btn">
-              Explore Menu <ChevronRight size={14} />
-            </a>
+            {isPrivacyPage ? (
+              <Link to="/" className="cm-nav-btn">
+                <ArrowLeft size={14} /> Back to Home
+              </Link>
+            ) : (
+              <a href="#menu" className="cm-nav-btn">
+                Explore Menu <ChevronRight size={14} />
+              </a>
+            )}
           </nav>
 
           {/* Mobile Menu Toggle Button */}
@@ -93,13 +118,31 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <a
-              href="#menu"
+            <Link
+              to="/privacy-policy"
               onClick={() => setIsMenuOpen(false)}
-              className="cm-nav-btn cm-drawer-btn"
+              className="cm-nav-link"
+              style={{ color: '#ffb703', fontWeight: 700 }}
             >
-              Explore 75+ Menu Items
-            </a>
+              Privacy Policy
+            </Link>
+            {isPrivacyPage ? (
+              <Link
+                to="/"
+                onClick={() => setIsMenuOpen(false)}
+                className="cm-nav-btn cm-drawer-btn"
+              >
+                ← Return to Home
+              </Link>
+            ) : (
+              <a
+                href="#menu"
+                onClick={() => setIsMenuOpen(false)}
+                className="cm-nav-btn cm-drawer-btn"
+              >
+                Explore 75+ Menu Items
+              </a>
+            )}
           </div>
         </>
       )}
@@ -684,6 +727,14 @@ const FranchiseForm = () => {
               Submit Franchise Application
             </button>
 
+            <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', lineHeight: 1.5, marginTop: '12px' }}>
+              By submitting this application, you agree to our{' '}
+              <Link to="/privacy-policy" style={{ color: '#ffb703', textDecoration: 'underline', fontWeight: 700 }}>
+                Privacy Policy
+              </Link>{' '}
+              and consent to receive communication via Call, SMS, WhatsApp, or Email regarding franchise opportunities.
+            </p>
+
             {status && (
               <p style={{ textAlign: 'center', fontSize: '12px', fontWeight: 800, marginTop: '12px', color: status.includes('Successfully') ? '#16a34a' : '#d97706' }}>
                 {status}
@@ -777,6 +828,13 @@ const Contact = () => {
               Send Message
             </button>
 
+            <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', lineHeight: 1.5, marginTop: '12px' }}>
+              We respect your data privacy. Read our{' '}
+              <Link to="/privacy-policy" style={{ color: '#ffb703', textDecoration: 'underline', fontWeight: 700 }}>
+                Privacy Policy
+              </Link>.
+            </p>
+
             {status && (
               <p style={{ textAlign: 'center', fontSize: '12px', fontWeight: 800, marginTop: '12px', color: status.includes('Successfully') ? '#16a34a' : '#d97706' }}>
                 {status}
@@ -790,56 +848,91 @@ const Contact = () => {
 };
 
 // ==================== FOOTER ====================
-const Footer = () => (
-  <footer className="cm-footer">
-    <div className="cm-container">
-      <div className="cm-footer-grid">
-        <div className="cm-footer-col cm-footer-brand">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-            <img src="/logo.png" alt="Chaw Momos" style={{ height: '48px', width: '48px', borderRadius: '50%', objectFit: 'contain' }} />
-            <div>
-              <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff' }}>CHAW MOMOS</div>
-              <span style={{ fontSize: '9px', fontWeight: 800, color: '#ffb703', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
-                Himalayan Taste • Punjabi Tadka • Café & Quick Bites
-              </span>
+const Footer = () => {
+  const location = useLocation();
+  const isPrivacyPage = location.pathname.startsWith('/privacy');
+
+  return (
+    <footer className="cm-footer">
+      <div className="cm-container">
+        <div className="cm-footer-grid">
+          <div className="cm-footer-col cm-footer-brand">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <img src="/logo.png" alt="Chaw Momos" style={{ height: '48px', width: '48px', borderRadius: '50%', objectFit: 'contain' }} />
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff' }}>CHAW MOMOS</div>
+                <span style={{ fontSize: '9px', fontWeight: 800, color: '#ffb703', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+                  Himalayan Taste • Punjabi Tadka • Café & Quick Bites
+                </span>
+              </div>
+            </div>
+            <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#9ca3af' }}>
+              India's ultimate destination for handcrafted mountain momos, traditional Thukpa, fiery Punjabi tadka delights, barista coffees, and quick bites.
+            </p>
+          </div>
+
+          <div className="cm-footer-col">
+            <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Quick Links</h4>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+              <li><a href={isPrivacyPage ? "/#home" : "#home"} style={{ color: '#9ca3af' }}>Home</a></li>
+              <li><a href={isPrivacyPage ? "/#brand-story" : "#brand-story"} style={{ color: '#9ca3af' }}>Brand Story</a></li>
+              <li><a href={isPrivacyPage ? "/#menu" : "#menu"} style={{ color: '#9ca3af' }}>Menu (75+ Items)</a></li>
+              <li><a href={isPrivacyPage ? "/#about" : "#about"} style={{ color: '#9ca3af' }}>About Founders</a></li>
+              <li><a href={isPrivacyPage ? "/#franchise" : "#franchise"} style={{ color: '#9ca3af' }}>Franchise</a></li>
+              <li><a href={isPrivacyPage ? "/#contact" : "#contact"} style={{ color: '#9ca3af' }}>Contact</a></li>
+              <li>
+                <Link to="/privacy-policy" style={{ color: '#ffb703', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  Privacy Policy ↗
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="cm-footer-col">
+            <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Location & Contact</h4>
+            <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#9ca3af', marginBottom: '10px' }}>
+              Chandigarh
+            </p>
+            <div style={{ fontSize: '13px', color: '#ffb703', fontWeight: 700, marginBottom: '6px' }}>
+              <a href="mailto:academyqsr@gmail.com" style={{ color: '#ffb703' }}>academyqsr@gmail.com</a>
+            </div>
+            <div style={{ fontSize: '13px', color: '#9ca3af', fontWeight: 600 }}>
+              <a href="tel:+919780524008" style={{ color: '#9ca3af' }}>+91 97805 24008</a>
             </div>
           </div>
-          <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#9ca3af' }}>
-            India's ultimate destination for handcrafted mountain momos, traditional Thukpa, fiery Punjabi tadka delights, barista coffees, and quick bites.
-          </p>
         </div>
 
-        <div className="cm-footer-col">
-          <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Quick Links</h4>
-          <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
-            <li><a href="#home" style={{ color: '#9ca3af' }}>Home</a></li>
-            <li><a href="#brand-story" style={{ color: '#9ca3af' }}>Brand Story</a></li>
-            <li><a href="#menu" style={{ color: '#9ca3af' }}>Menu (75+ Items)</a></li>
-            <li><a href="#about" style={{ color: '#9ca3af' }}>About Founders</a></li>
-            <li><a href="#franchise" style={{ color: '#9ca3af' }}>Franchise</a></li>
-            <li><a href="#contact" style={{ color: '#9ca3af' }}>Contact</a></li>
-          </ul>
-        </div>
-
-        <div className="cm-footer-col">
-          <h4 style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '1px', marginBottom: '14px' }}>Location & Contact</h4>
-          <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#9ca3af', marginBottom: '10px' }}>
-            Chandigarh
-          </p>
-          <div style={{ fontSize: '13px', color: '#ffb703', fontWeight: 700 }}>academyqsr@gmail.com</div>
+        <div className="cm-footer-bottom">
+          <div>&copy; {new Date().getFullYear()} Chaw Momos Franchise & Café. All Rights Reserved.</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <span>Himalayan Taste • Punjabi Tadka • Café & Quick Bites</span>
+            <span style={{ color: 'rgba(255, 255, 255, 0.2)' }}>•</span>
+            <Link to="/privacy-policy" style={{ color: '#ffb703', textDecoration: 'underline', fontWeight: 700 }}>
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
+    </footer>
+  );
+};
 
-      <div className="cm-footer-bottom">
-        <div>&copy; {new Date().getFullYear()} Chaw Momos Franchise & Café. All Rights Reserved.</div>
-        <div>Himalayan Taste • Punjabi Tadka • Café & Quick Bites</div>
-      </div>
-    </div>
-  </footer>
-);
+// ==================== HOME PAGE ====================
+const HomePage = () => {
+  const location = useLocation();
 
-// ==================== ROOT APP ====================
-function App() {
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+    }
+  }, [location]);
+
   const handleSelectCategoryFromBanner = (categoryId) => {
     const menuEl = document.getElementById('menu');
     if (menuEl) {
@@ -848,14 +941,38 @@ function App() {
   };
 
   return (
-    <div>
-      <Navbar />
+    <>
       <Hero />
       <BrandStory onSelectCategory={handleSelectCategoryFromBanner} />
       <MenuSection />
       <About />
       <FranchiseForm />
       <Contact />
+    </>
+  );
+};
+
+// Helper: Scroll to top on pathname changes
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
+// ==================== ROOT APP ====================
+function App() {
+  return (
+    <div>
+      <ScrollToTop />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="*" element={<HomePage />} />
+      </Routes>
       <Footer />
     </div>
   );
